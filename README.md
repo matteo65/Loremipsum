@@ -1,7 +1,8 @@
 # Loremipsum
 **`loremipsum` is a lightweight, customizable command-line interface (CLI) tool that generates random placeholder text in the classic "Lorem Ipsum" style directly to `stdout`.**
 
-It uses a pool of 48 predefined sentences containing only uppercase/lowercase alphabetic characters, periods, commas, and exclamation marks. It is ideal for developers, testers, and system administrators who need a quick, dependency-free text generator.
+It uses a pool of 48 predefined sentences containing only uppercase/lowercase alphabetic characters, periods, commas, and exclamation marks. It is ideal for developers, testers, and system administrators who need a quick, dependency-free text generator.  
+Each sentence may begin with a sequential number (counter).  
 
 ## Features
 
@@ -31,7 +32,8 @@ gcc -O3 loremipsum.c -o loremipsum
 | `-newline` | Write a newline after every sentence | No newline (continuous block) |
 | `-seed <number>` | Initialize the random generator to a specific seed | Random seed |
 | `-sentences <number>` | Write a specific number of sentences | Infinite |
-| *No arguments* | Prints the help message | — |
+| `-counter` | Write a sequential number at the beginning of the sentences | No counter|
+| *No arguments* | Prints the help message | - |
 
 ## Common Use Cases & Examples
 
@@ -53,7 +55,7 @@ Create dummy files of any size for software deployment testing or file transfer 
 Use the default infinite stream behavior to test command-line pipes, debug data streams, or benchmark terminal performance:
 ```bash
 # Pipe a stream of text into another command (e.g., word count)
-./loremipsum start -newline -sentences 1000 | wc
+./loremipsum start -newline -sentences 1000 -counter | wc
 ```
 
 ### 4. Automated Testing & CI/CD
