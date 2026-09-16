@@ -12,12 +12,14 @@
  *        -newline            Write a newline after every sentence (default no newline)
  *        -seed <number>      Initialize the random generator to the seed (default seed=random)
  *        -sentences <number> Write <number> sentences (default number = infinite)
+ *        -counter            Write a sequential number at the beginning of the sentences 
  *
  *    No args prints help
  *
  * Command line "Lorem Ipsum" text generator.
  * Writes random Lorem Ipsum style ASCII text to stdout.
  * The text contains only uppercase and lowercase alphabetic characters, the period, the comma, and the exclamation mark.
+ * Each sentence may begin with a sequential number (counter).
  * Uses 48 randomly chosen predefined sentences.
  *
  */
@@ -90,6 +92,7 @@ uint64_t sirius64(uint64_t *state);
 size_t get_random(void);
 
 static int opt_newline = 0;
+static int opt_counter = 0;
 static uint64_t seed;
 
 int main(int argc, const char *argv[])
@@ -112,6 +115,9 @@ int main(int argc, const char *argv[])
 		if(strcmp(argv[i], "-newline") == 0) {
 			opt_newline = 1;
 		}
+		else if(strcmp(argv[i], "-counter") == 0) {
+			opt_counter = 1;
+		}
 		else if(strcmp(argv[i], "-seed") == 0) {
 			if(i >= argc - 1 || !is_valid_uint64(argv[++i], &seed)) {
 				invalid_arguments(argv[i]);
@@ -133,14 +139,22 @@ int main(int argc, const char *argv[])
 		return 0;
 	}
 	
+	if(opt_counter) {
+		printf("1 ");
+	}
 	printf("%s", sentences[get_random()]);
-	while(--nsentences > 0) {
+	
+	for(uint64_t i = 2; i <= nsentences; i++) {
 		if(opt_newline) {
 			printf("\n");
 		}
 		else {
 			printf(" ");
 		}
+		if(opt_counter) {
+			printf("%" PRIu64 " ", i);
+		}
+
 		printf("%s", sentences[get_random()]);
 	}
 	if(opt_newline) {
@@ -159,7 +173,8 @@ void usage(void)
 	printf("Options:\n");
 	printf("-newline            Write a newline after every sentence (default no newline)\n");
 	printf("-seed <number>      Initialize the random generator to the seed (default seed = random)\n");
-	printf("-sentences <number> Write <number> sentences (default number = infinite)\n\n");
+	printf("-sentences <number> Write <number> sentences (default number = infinite)\n");
+	printf("-counter            Write a sequential number at the beginning of the sentences\n\n");
 	printf("No args prints help\n");
 }
 
